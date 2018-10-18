@@ -1,0 +1,32 @@
+version: '2'
+services:
+  ubuntu_nginx:
+    tty: true
+    image: studiomado/nginx_ubuntu:1.0
+    ports:
+      - 80:80
+    volumes:
+      - ./utils/default.conf:/etc/nginx/sites-available/default
+      - ./utils/default.conf:/etc/nginx/sites-enabled/default
+      - ./utils/nginx.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/web
+    depends_on:
+      - ubuntu_php
+  ubuntu_php:
+    tty: true
+    image: studiomado/php71_ubuntu:1.0
+    ports:
+      - 9000:9000
+    volumes:
+      - .:/var/www/web
+    depends_on:
+      - ubuntu_mariadb
+  ubuntu_mariadb:
+    tty: true
+    image: studiomado/mariadb_ubuntu:1.0
+    expose:
+      - "3306"
+    ports:
+      - 3306:3306
+    env_file:
+      - .env
