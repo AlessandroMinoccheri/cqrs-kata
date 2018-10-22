@@ -8,6 +8,8 @@
 
 namespace App\Domain\Model\Post;
 
+use Ramsey\Uuid\Uuid;
+
 final class PostId
 {
     /**
@@ -29,5 +31,12 @@ final class PostId
     public function id()
     {
         return $this->id;
+    }
+
+    public static function create()
+    {
+        $id = Uuid::uuid4();
+
+        return new self($id);
     }
 }
